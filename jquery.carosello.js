@@ -81,7 +81,7 @@
             },
             
             // Get normalised index (keeps index within contraints)
-            normaliseIndex = function (slideCount, index) {
+            nIndex = function (slideCount, index) {
                 if (index < 0) { return slideCount - 1; } 
                 if (index >= slideCount) { return 0; }
                 return index;
@@ -159,7 +159,7 @@
                 }
                 
                 if ( ! $target) {
-                    $target = $slides.eq(normaliseIndex(index));
+                    $target = $slides.eq(nIndex(slideCount, index));
                 }
                 
                 // Animate to scroll position
