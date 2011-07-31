@@ -146,8 +146,14 @@
                         $target = insertTrick($contInner, $slides, 'ltr');
                     } else if (dir === 'rtl' && currentIndex <= 0) {
                         $target = insertTrick($contInner, $slides, 'rtl');
-                        $cont.scrollLeft(
-                            $slides.eq(currentIndex).position().left);
+                        
+                        if (settings.axis === 'x') {
+                            $cont.scrollLeft(
+                                $slides.eq(currentIndex).position().left);
+                        } else {
+                            $cont.scrollTop(
+                                $slides.eq(currentIndex).position().top);
+                        }
                     }
                     trickery = !! $target;
                 }
@@ -168,12 +174,20 @@
                         if (dir === 'ltr') {
                             $target = $slides.first();
                             index = 0;
-                            $cont.scrollLeft(0);
+                            if (settings.axis === 'x') {
+                                $cont.scrollLeft(0);
+                            } else {
+                                $cont.scrollTop(0);
+                            }
                             stepsToGo = step - 1;
                         } else if (dir === 'rtl') {
                             $target = $slides.last();
                             index = slideCount - 1;
-                            $cont.scrollLeft($target.position().left);
+                            if (settings.axis === 'x') {
+                                $cont.scrollLeft($target.position().left);
+                            } else {
+                                $cont.scrollTop($target.position().top);
+                            }
                             stepsToGo = step + 1;
                         }
                         
