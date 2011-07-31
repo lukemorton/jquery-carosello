@@ -61,7 +61,7 @@ In other cases configuration can be more wieldy:
 				'auto' : true
 			}
 		});
-		$toggle.click(function () { $slider.cycle.toggle(); });
+		$toggle.click(function () { $carosello.cycle.toggle(); });
 	});
 	
 The above example turns on the infinite behaviour, that is, when the
@@ -79,7 +79,7 @@ hope you find it fairly explanatory.
 
 I imagine a layer above this plugin, to provide an even simpler API
 with a much more opinionated nature. However I have no personal need
-for this and therefore the flexible nature of `$.fn.roundabout` is a
+for this and therefore the flexible nature of `$.fn.carosello` is a
 feature for me.
 
 ## Author
