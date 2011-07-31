@@ -159,7 +159,7 @@
                 }
                 
                 if ( ! $target) {
-                    $target = $slides.eq(index);
+                    $target = $slides.eq(normaliseIndex(index));
                 }
                 
                 // Animate to scroll position
