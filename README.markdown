@@ -1,6 +1,6 @@
 # jQuery Carosello
 
-	$('.ra').carosello();
+	$('#ca').carosello();
 	
 Carosello is another jQuery carousel. I've tried to implement this
 one without too much bias, and with flexibility in mind. So for
@@ -48,7 +48,7 @@ In other cases configuration can be more wieldy:
 
 	$(function () {
 		var $toggle = $('a.toggle');
-		$('#ra').carosello({
+		$('#ca').carosello({
 			'infinite' : true,
 			'cycle' : {
 				'step' : 1,
@@ -77,10 +77,10 @@ hope you find it fairly explanatory.
 
 ## Future
 
-I imagine a layer about this plugin, to provide an even simpler API
-but with a much more opinionated nature. However I have no personal
-need for this and therefore the flexible nature of `$.fn.roundabout`
-is a feature for me.
+I imagine a layer above this plugin, to provide an even simpler API
+with a much more opinionated nature. However I have no personal need
+for this and therefore the flexible nature of `$.fn.roundabout` is a
+feature for me.
 
 ## Author
 
