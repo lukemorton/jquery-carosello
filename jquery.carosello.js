@@ -21,7 +21,7 @@
         'axis' : 'x',
         
         // Are we looping infinitely?
-        'infinite' : false,
+        'infinite' : true,
         
         // What carosello index should we start on?
         'startIndex' : 0,
@@ -137,9 +137,6 @@
                     // Are we tricking?
                     trickery = false;
                 
-                // Set carosello index on object
-                $ca.data(settings.ns + 'Index', index);
-                
                 if (settings.infinite) {
                     // Insert trick if we are on last slide 
                     if (dir === 'ltr' && currentIndex >= slideCount - 1) {
@@ -159,7 +156,7 @@
                 }
                 
                 if ( ! $target) {
-                    $target = $slides.eq(nIndex(slideCount, index));
+                    $target = $slides.eq(index = nIndex(slideCount, index));
                 }
                 
                 // Animate to scroll position
@@ -191,8 +188,6 @@
                             stepsToGo = step + 1;
                         }
                         
-                        $ca.data(settings.ns + 'Index', index);
-                        
                         if (stepsToGo > 0) {
                             toIndex.call(s, stepsToGo, callback);
                             
@@ -200,6 +195,8 @@
                             return;
                         }
                     }
+                    
+                    $ca.data(settings.ns + 'Index', index);
                     
                     // Slide change complete event
                     $ca.trigger(settings.ns + 'Change', [index, $target]);
