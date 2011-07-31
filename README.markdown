@@ -49,9 +49,8 @@ In other cases configuration can be more wieldy:
 	$(function () {
 		var $toggle = $('a.toggle');
 		$('#ca').carosello({
-			'infinite' : true,
+			'axis' : 'y',
 			'cycle' : {
-				'step' : 1,
 				'onStart' : function () {
 					$toggle.text('pause');
 				},
@@ -64,11 +63,9 @@ In other cases configuration can be more wieldy:
 		$toggle.click(function () { $carosello.cycle.toggle(); });
 	});
 	
-The above example turns on the infinite behaviour, that is, when the
-carousel reaches it's last slide, it will continue to slide in the
-same direction as if the slides were infinite. It also implements
-toggle functionality. As you can see not everything can be done with
-configuration but it certainly removes some boilerplate.
+The above example turns your HTML into a vertical carousel. It also
+implements toggle functionality. As you can see not everything can
+be done with configuration but it certainly removes some boilerplate.
 
 ## API
 
