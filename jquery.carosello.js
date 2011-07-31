@@ -173,8 +173,7 @@
                         } else if (dir === 'rtl') {
                             $target = $slides.last();
                             index = slideCount - 1;
-                            $cont.scrollLeft(
-                                $target.position().left);
+                            $cont.scrollLeft($target.position().left);
                             stepsToGo = step + 1;
                         }
                         
@@ -214,12 +213,14 @@
             // Stop cycling
             ca.cycle.stop();
             
-            // Slide only carosellos containing target to target's index
+            // Slide only those containing target to target's index
             ca.has($target).each(function () {
                 var $ca = $(this);
                 
-                // I want to make the following line healthier at some point
-                var index = $ca.find(settings.container).children().children().filter($target)
+                // TODO: I want to make the following line healthier
+                // at some point
+                var index = $ca.find(settings.container)
+                    .children().children().filter($target)
                     .index();
                 
                 toIndex.call(this, index, callback);
@@ -313,8 +314,7 @@
         // Init
         return ca.each(function () {
             // Set axis class
-            $(this).addClass(settings.ns + '-axis-' +
-                settings.axis);
+            $(this).addClass(settings.ns + '-axis-' + settings.axis);
             
             // Always start on an index
             toIndex.call(this, settings.startIndex);
