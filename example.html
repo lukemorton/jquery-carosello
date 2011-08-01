@@ -1,50 +1,63 @@
 <!doctype html>
 <html>
 	<head>
-		<title></title>
+		<title>jQuery Carosello Example</title>
 		<meta charset="utf-8" />
 		<style>
 			* { margin: 0; padding: 0; }
-			.ca-container {
-				width: 300px;
-				height: 120px;
-				overflow-x: auto;
+			.ca {
+				overflow: hidden;
 			}
-			.ca-container ul {
-				width: 900px;
-				height: 100%;
+			.ca, .ca img {
+				width: 500px;
+				height: 350px;
 			}
-			.ca-container li {
-				float: left;
-			}
-			.ca-container img {
-				width: 300px;
-				height: 100px;
+			.ca img {
 				display: block;
+			}
+			.ca ul {
+				width: 5000em;
+				height: 100%;
+				list-style: none;
+			}
+			.ca.ca-axis-x li {
+				float: left;
 			}
 		</style>
 	</head>
 	<body>
-		<div id="ca">
-			<div class="ca-container">
-				<ul>
-					<li>
-						<img src="http://static.jquery.com/files/rocker/images/logo_jquery_215x53.gif" />
-					</li>
-					<li>
-						<img src="http://static.jquery.com/files/rocker/images/logo_jquery_215x53.gif" />
-					</li>
-					<li>
-						<img src="http://static.jquery.com/files/rocker/images/logo_jquery_215x53.gif" />
-					</li>
-				</ul>
-			</div>
+		<div class="ca ltr">
+			<ul>
+				<li>
+					<img src="http://farm4.static.flickr.com/3231/2866287901_a6d056f6a0.jpg" />
+				</li>
+				<li>
+					<img src="http://farm4.static.flickr.com/3157/2866240759_2ebe8ee7a4.jpg" />
+				</li>
+				<li>
+					<img src="http://farm4.static.flickr.com/3119/2864084063_8d488f6b89.jpg" />
+				</li>
+			</ul>
+		</div>
+		<div class="ca ttb">
+			<ul>
+				<li>
+					<img src="http://static.jquery.com/files/rocker/images/logo_jquery_215x53.gif" />
+				</li>
+				<li>
+					<img src="http://static.jquery.com/files/rocker/images/logo_jquery_215x53.gif" />
+				</li>
+				<li>
+					<img src="http://static.jquery.com/files/rocker/images/logo_jquery_215x53.gif" />
+				</li>
+			</ul>
 		</div>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
-		<script src="https://raw.github.com/DrPheltRight/jQuery-Carosello/develop/jquery.carosello.js"></script>
+		<script src="jquery.carosello.js"></script>
 		<script>
 			$(function () {
-				$('#ca').carosello().cycle.start();
+				$('.ca.ltr').carosello().cycle.start();
+				$('.ca.ttb').carosello({'axis':'y'}).cycle.start();
 			});
 		</script>
 	</body>
