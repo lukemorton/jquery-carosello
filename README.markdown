@@ -9,10 +9,10 @@ want to control your carosello. All I assume is that you want it
 to go around.
 
 These decisions also make it fairly lightweight, before minification
-the plugin is around 9kb. I've uglified it down to 2.6kb. That's some
-lightweight ish right there, compared to say jCarousel which is 35kb
-(15kb minified). Having said that jCarousel does more for you which
-can be a benefit, check it out :)
+the plugin is around 8.7kb. I've uglified it down to 2.6kb. That's
+some lightweight ish right there, compared to say jCarousel which is
+35kb (15kb minified). Having said that jCarousel does more for you 
+which can be a benefit, check it out :)
 
 Still here? I presume you're after a more lightweight customisable
 experience then. Read on for some usage detail...
