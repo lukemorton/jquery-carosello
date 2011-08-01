@@ -8,6 +8,15 @@ example I decided not to implement any assumptions about how you
 want to control your carosello. All I assume is that you want it
 to go around.
 
+These decisions also make it fairly lightweight, before minification
+the plugin is around 9kb. I've uglified it down to 2.6kb. That's some
+lightweight ish right there, compared to say jCarousel which is 35kb
+(15kb minified). Having said that jCarousel does more for you which
+can be a benefit, check it out :)
+
+Still here? I presume you're after a more lightweight customisable
+experience then. Read on for some usage detail...
+
 ## Usage
 
 Most functionality can be expressed via configuration or specific
@@ -15,24 +24,22 @@ methods, that decision is yours. To get a basic carousel going
 without controls you need to already implement the following HTML:
 
 	<div id="ca">
-		<div class="ca-container">
-			<ul>
-				<li>
-					<img src="..." />
-				</li>
-				<li>
-					<img src="..." />
-				</li>
-				<li>
-					<img src="..." />
-				</li>
-			</ul>
-		</div>
+		<ul>
+			<li>
+				<img src="..." />
+			</li>
+			<li>
+				<img src="..." />
+			</li>
+			<li>
+				<img src="..." />
+			</li>
+		</ul>
 	</div>
 
-The outer `<div>` is used to initiate `$.fn.carosello()`, you could
-initiate multiple carousels within this element by including multiple
-`div.ca-container`. The JS required is brief:
+The outer `<div>` is used to initiate `$.fn.carosello()`, inside that
+you need another wrapper element in this case `<ul>`. Then each slide
+item is an `<li>`. The JS required is also brief:
 
 	$(function () {
 		$('#ca').carosello().cycle.start();
@@ -66,6 +73,9 @@ In other cases configuration can be more wieldy:
 The above example turns your HTML into a vertical carousel. It also
 implements toggle functionality. As you can see not everything can
 be done with configuration but it certainly removes some boilerplate.
+
+I have missed out the fact you need to do some things with CSS, but
+if you checkout example.html you will see it's not much at all.
 
 ## API
 
