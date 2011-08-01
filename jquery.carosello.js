@@ -234,7 +234,13 @@
 		
 		// Slide directly to element
 		ca.to = function (obj, callback) {
-			var $target = $(obj);
+			var $target;
+
+			if (obj instanceof jQuery) {
+				$target = obj;
+			} else {
+				$target = $(obj);
+			}
 			
 			// Stop cycling
 			ca.cycle.stop();
@@ -320,7 +326,6 @@
 				if (ca.cycle.instance) {
 					return ca.cycle.stop(callback);
 				}
-				
 				return ca.cycle.start(callback);
 			}
 		};
