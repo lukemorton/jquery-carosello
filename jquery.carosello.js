@@ -11,9 +11,6 @@
         // Namespace
         'ns' : 'ca',
         
-        // Slider container
-        'container' : '.ca-container',
-        
         // Speed of slide animation
         'speed' : 500,
         
@@ -69,7 +66,25 @@
         }
     };
     
-    // The plugin
+    // The plugin method
+    // You call it like any other jQuery method
+    //     $('#ca').carosello();
+    // Sometimes with options:
+    //     $('#ca').carosello({'axis':'y'});
+    // It also attaches some methods:
+    //     var $ca = $('#ca').carosello();
+    //     $ca.toIndex(2);
+    //     $ca.to('#two');
+    //     $ca.step(5);
+    //     $ca.next();
+    //     $ca.previous();
+    //     $ca.cycle.start();
+    //     $ca.cycle.stop();
+    //     $ca.cycle.toggle();
+    // All these methods take an optional callback:
+    //     $ca.next(function (i, $slide) { alert(i); });
+    //     $ca.toIndex(3, function (i, $slide) { alert('woo'); });
+    //     $ca.cycle.toggle(function (action) { alert(action); });
     $.fn.carosello = function (settings) {
         
         // Alias for this
@@ -100,67 +115,74 @@
             
             // Get direction from step
             getDir = function (step) {
-                if (step > 0) {
-                    return 'ltr';
-                } else if (step < 0) {
-                    return 'rtl';
+                if (step > 0) { return 'ltr'; }
+                if (step < 0) { return 'rtl'; }
+                return null;
+            },
+            
+            // Non-animated scroll to x/y
+            scrollToPosition = function ($cont, axis, offset) {
+                if (axis === 'x') {
+                    $cont.scrollLeft(offset);
                 } else {
-                    return null;
+                    $cont.scrollTop(offset);
                 }
+            },
+            
+            // Not animated scroll to $target
+            scrollToTarget = function ($cont, axis, $target) {
+                scrollToPosition($cont, settings.axis,
+                    $target.position()[axis === 'x' ? 'left' : 'top']);
             },
             
             // Slide to index in a particular carosello element
             toIndex = function (index, callback) {
-                var s = this,
-                    $ca = $(this),
+                // !! c is not ca from parent scope
+                var c = this,
+                    $ca = $(c),
                 
-                    // Container elements
-                    $cont = $ca.find(settings.container),
-                    $contInner = $cont.children(),
+                    // Container element
+                    $cont = $ca.children(),
                 
                     // Slides
-                    $slides = $contInner.children(),
+                    $slides = $cont.children(),
                     slideCount = $slides.length,
                 
                     // Current index
-                    currentIndex = getIndex.call(this),
+                    currIndex = getIndex.call(ca),
                 
                     // Slide we are moving to
                     $target,
                     
                     // Step
-                    step = index - currentIndex,
+                    step = index - currIndex,
                     
                     // Which direction are we moving?
                     dir = getDir(step),
                     
                     // Are we tricking?
-                    trickery = false;
+                    trickery = settings.infinite &&
+                        ((dir === 'ltr' && currIndex >= slideCount - 1) ||
+                            (dir === 'rtl' && currIndex <= 0));
                 
-                if (settings.infinite) {
-                    // Insert trick if we are on last slide 
-                    if (dir === 'ltr' && currentIndex >= slideCount - 1) {
-                        $target = insertTrick($contInner, $slides, 'ltr');
-                    } else if (dir === 'rtl' && currentIndex <= 0) {
-                        $target = insertTrick($contInner, $slides, 'rtl');
-                        
-                        if (settings.axis === 'x') {
-                            $cont.scrollLeft(
-                                $slides.eq(currentIndex).position().left);
-                        } else {
-                            $cont.scrollTop(
-                                $slides.eq(currentIndex).position().top);
-                        }
+                if (trickery) {
+                    // Insert trick as we are on last slide 
+                    $target = insertTrick($cont, $slides, dir);
+                
+                    if (dir === 'rtl') {
+                        scrollToTarget($ca, settings.axis,
+                            $slides.eq(currIndex));
                     }
-                    trickery = !! $target;
                 }
                 
                 if ( ! $target) {
-                    $target = $slides.eq(index = nIndex(slideCount, index));
+                    // Work out normalised target
+                    index = nIndex(slideCount, index);
+                    $target = $slides.eq(index);
                 }
                 
                 // Animate to scroll position
-                $cont.animate(settings.animation($cont, $target, settings),
+                $ca.animate(settings.animation($ca, $target, settings),
                     settings.speed, function () {
                     var stepsToGo;
                     
@@ -171,31 +193,24 @@
                         if (dir === 'ltr') {
                             $target = $slides.first();
                             index = 0;
-                            if (settings.axis === 'x') {
-                                $cont.scrollLeft(0);
-                            } else {
-                                $cont.scrollTop(0);
-                            }
+                            scrollToPosition($ca, settings.axis, 0);
                             stepsToGo = step - 1;
                         } else if (dir === 'rtl') {
                             $target = $slides.last();
                             index = slideCount - 1;
-                            if (settings.axis === 'x') {
-                                $cont.scrollLeft($target.position().left);
-                            } else {
-                                $cont.scrollTop($target.position().top);
-                            }
+                            scrollToTarget($ca, settings.axis, $target);
                             stepsToGo = step + 1;
                         }
                         
                         if (stepsToGo > 0) {
-                            toIndex.call(s, stepsToGo, callback);
+                            toIndex.call(c, stepsToGo, callback);
                             
                             // Do not trigger event or callback
                             return;
                         }
                     }
                     
+                    // Record current index
                     $ca.data(settings.ns + 'Index', index);
                     
                     // Slide change complete event
@@ -229,7 +244,6 @@
                 var $ca = $(this);
                 
                 // TODO: I want to make the following line healthier
-                // at some point
                 var index = $ca.find(settings.container)
                     .children().children().filter($target)
                     .index();
@@ -244,7 +258,8 @@
         ca.step = function (step, callback) {
             return ca
                 .each(function () {
-                    toIndex.call(this, getIndex.call(this) + step, callback);
+                    toIndex.call(this, getIndex.call(this) + step,
+                        callback);
                 });
         };
         
@@ -263,7 +278,7 @@
             instance : null,
         
             // Add cycle functionality
-            start : function (speed) {
+            start : function (speed, callback) {
                 // No multi cycling
                 if (ca.cycle.instance !== null) {
                     return ca;
@@ -281,27 +296,32 @@
                 
                 ca.cycle.instance = setTimeout(cycle, speed);
                 ca.trigger(settings.ns + 'CycleStart');
-                
+                if (callback) {
+                    callback.call(ca, 'start');
+                }
                 return ca;
             },
             
             // Allow the stopping of cycle
-            stop : function () {
+            stop : function (callback) {
                 if (ca.cycle.instance !== null) {
                     clearTimeout(ca.cycle.instance);
                     ca.cycle.instance = null;
                     ca.trigger(settings.ns + 'CycleStop');
+                    if (callback) {
+                        callback.call(ca, 'stop');
+                    }
                 }
                 return ca;
             },
             
             // Toggle does the right thing for you
-            toggle : function () {
+            toggle : function (callback) {
                 if (ca.cycle.instance) {
-                    return ca.cycle.stop();
+                    return ca.cycle.stop(callback);
                 }
                 
-                return ca.cycle.start();
+                return ca.cycle.start(callback);
             }
         };
         
@@ -309,7 +329,7 @@
         settings = ca.settings = $.extend(true, {},
             $.carosello.globalSettings, settings);
             
-        // Add shortcut callbacks if requested
+        // Add shortcut events if requested
         $.each(['Change'], function (i, val) {
             var c = settings['on' + val];
             if (c) { ca.bind(settings.ns + val, c); }
