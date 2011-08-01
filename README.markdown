@@ -48,7 +48,7 @@ In other cases configuration can be more wieldy:
 
 	$(function () {
 		var $toggle = $('a.toggle');
-		$('#ca').carosello({
+		var $carosello = $('#ca').carosello({
 			'axis' : 'y',
 			'cycle' : {
 				'onStart' : function () {
