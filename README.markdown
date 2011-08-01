@@ -77,10 +77,187 @@ be done with configuration but it certainly removes some boilerplate.
 I have missed out the fact you need to do some things with CSS, but
 if you checkout example.html you will see it's not much at all.
 
-## API
+## $.fn.carosello( [settings] )
 
-I will write up the API another time, for now consult the source. I
-hope you find it fairly explanatory.
+The `$.fn.carosello` method takes an option set of key/value pairs
+that configure the carousel. Please find a description of the
+available settings below.
+
+### ns (string)
+
+**Default:** 'ca'
+
+A simple string namespace used for namespacing events and classes
+used by Carosello.
+
+### speed (integer)
+
+**Default:** 500
+
+The speed at which a transition occurs in milliseconds. This can
+also be set to 'slow' or 'fast'.
+
+### axis (string)
+
+**Default:** 'x'
+
+This is the axis the default animation will slide along. You can
+only set this value to 'x' or 'y'.
+
+### infinite (boolean)
+
+**Default:** true
+
+A boolean value that indicates if we looping infinitely. An
+infinite loop is created by cloning elements to give the appearance
+there is no end to the slides within the carousel.
+
+### startIndex (integer)
+
+**Default:** 0
+
+This is the starting index the carousel will slide to on
+initialisation.
+
+### onChange(event, index, $target) (function)
+
+**Default:** null
+
+Shortcut to binding the caChange event. The caChange event is
+triggered after the slide has changed.
+
+### animation($container, $target, settings) (function)
+
+**Default:** function
+
+Method to create animation object. Can be overloaded to provide a
+custom animation for transitioning slides.
+
+### cycle.step (integer)
+
+**Default:** 1
+
+A signed integer that indicates the number of steps to be taken in
+a single cycle.
+
+### cycle.speed (integer)
+
+**Default:** 3000
+
+The duration for which each slide will stay still before
+transitioning to the next.
+
+### cycle.auto (boolean)
+
+**Default:** false
+
+A boolean vallue representing whether the cycle should start when
+the carosello is initialised.
+
+### cycle.onStart(event) (function)
+
+**Default:** null
+
+A shortcut to the caCycleStart event. This event is trigged when the
+cycle is first started.
+
+### cycle.onStop(event) (function)
+
+**Default:** null
+
+A shortcut to the caCycleStop event. This event is trigged when the
+cycle is first stopped.
+
+### cycle.onChange(event, index, $target) (function)
+
+**Default:** null
+
+Shortcut to binding the caCycleChange event. The caCycleChange event
+is triggered after the slide has changed during a cycle.
+
+## Methods of $.fn.carosello
+
+Please find below a description of additional methods attached to
+the standard jQuery methods returned by `$.fn.carosello`.
+
+### .toIndex( index, [callback] )
+
+Slide to a particular index. Starting with 0 for the first slide and
+incrementing upwards you can slide efficiently.
+
+**index (integer)** the index to slide to
+
+**callback(index, $target) (function)** a callback for when the
+transition complete
+
+### .to( selector, [callback] )
+
+Slide to a particular element by CSS style selector.
+
+**selector (string)** jQuery CSS style selector of the element you
+wish to slide to
+
+**callback(index, $target) (function)** a callback for when the
+transition complete
+
+### .to( DOMElement, [callback] )
+
+Slide to a particular element by DOMElement.
+
+**DOMElement (DOMElement)** the DOMElement to slide to
+
+**callback(index, $target) (function)** a callback for when the
+transition complete
+
+### .to( jQuery, [callback]) 
+
+Slide to a particular element by jQuery object.
+
+**jQuery (jQuery)** the jQuery element to slide to
+
+**callback(index, $target) (function)** a callback for when the
+transition complete
+
+### .step( steps, [callback] )
+
+Slide a certain number of steps.
+
+**steps (integer)** the amount of steps to slide
+
+**callback(index, $target) (function)** a callback for when the
+transition complete
+
+### .next( [callback] )
+
+Slide to the next slide.
+
+**callback(index, $target) (function)** a callback for when the
+transition complete
+
+### .previous( [callback] )
+
+Slide to the previous slide.
+
+**callback(index, $target) (function)** a callback for when the
+transition complete
+
+### .cycle.start( [callback] )
+
+Start a carousel cycle, i.e. a slideshow.
+
+**callback(action) (function)**
+
+### .cycle.stop( [callback] )
+
+Stop a carousel cycle.
+
+**callback(action) (function)**
+
+### .cycle.toggle( [callback] )
+
+Toggle a carousel cycle on and off.
+
+**callback(action) (function)**
 
 ## Future
 
