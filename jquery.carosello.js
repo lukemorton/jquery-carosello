@@ -242,9 +242,6 @@
 				$target = $(obj);
 			}
 			
-			// Stop cycling
-			ca.cycle.stop();
-			
 			// Slide only those containing target to target's index
 			ca.has($target).each(function () {
 				var $ca = $(this);
