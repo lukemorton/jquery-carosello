@@ -67,7 +67,9 @@ In other cases configuration can be more wieldy:
 				'auto' : true
 			}
 		});
-		$toggle.click(function () { $carosello.cycle.toggle(); });
+		$toggle.click(function () {
+			$carosello.cycle.toggle();
+		});
 	});
 	
 The above example turns your HTML into a vertical carousel. It also
