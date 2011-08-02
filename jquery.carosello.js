@@ -326,7 +326,7 @@
 				if (ca.cycle.instance) {
 					return ca.cycle.stop(callback);
 				}
-				return ca.cycle.start(callback);
+				return ca.cycle.start(null, callback);
 			}
 		};
 		
