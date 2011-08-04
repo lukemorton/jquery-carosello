@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+	<head>
+		<title>jQuery Carosello Example</title>
+		<meta charset="utf-8" />
+		<style>
+			* { margin: 0; padding: 0; }
+			.ca {
+				overflow: hidden;
+				position: relative;
+				float: left;
+			}
+			.ca, .ca img {
+				width: 500px;
+				height: 350px;
+			}
+			.ca img {
+				display: block;
+			}
+			.ca ul {
+				width: 5000em;
+				height: 5000em;
+				list-style: none;
+			}
+			.ca.ca-axis-x li {
+				float: left;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="ca">
+			<ul>
+				<li>
+					<img src="http://farm4.static.flickr.com/3231/2866287901_a6d056f6a0.jpg" />
+				</li>
+				<li>
+					<img src="http://farm4.static.flickr.com/3157/2866240759_2ebe8ee7a4.jpg" />
+				</li>
+				<li>
+					<img src="http://farm4.static.flickr.com/3119/2864084063_8d488f6b89.jpg" />
+				</li>
+			</ul>
+		</div>
+		<div id="controls">
+			<a href="#previous">Previous</a>
+			<a href="#next">Next</a>
+		</div>
+		<div id="cycle-controls">
+			<a href="#toggle">Play</a>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+		<script src="../jquery.carosello.js"></script>
+		<script>
+			$(function () {
+				var $toggle = $('a[href=#toggle]'),
+					$ca = $('.ca').carosello({
+						'cycle' : {
+							'onStart' : function () {
+								$toggle.text('Pause');
+							},
+							'onStop' : function () {
+								$toggle.text('Play');
+							}
+						}
+					});
+					
+				$('#controls > a').click(function (e) {
+					var href = $(this).attr('href').split('#')[1];
+					$ca.cycle.stop();
+					$ca[href]();
+					e.preventDefault();
+				});
+				
+				$toggle.click(function (e) {
+					e.preventDefault();
+					$ca.cycle.toggle();
+				});
+			});
+		</script>
+	</body>
+</html>

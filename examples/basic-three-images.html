@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+	<head>
+		<title>jQuery Carosello Example</title>
+		<meta charset="utf-8" />
+		<style>
+			* { margin: 0; padding: 0; }
+			.ca {
+				overflow: hidden;
+				position: relative;
+				float: left;
+				width: 750px;
+			}
+			.ca, .ca img {
+				height: 166px;
+			}
+			.ca img {
+				display: block;
+				width: 250px;
+			}
+			.ca ul {
+				width: 5000em;
+				height: 5000em;
+				list-style: none;
+			}
+			.ca.ca-axis-x li {
+				float: left;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="ca">
+			<ul>
+				<li>
+					<img src="http://farm1.static.flickr.com/213/491726079_4f46636859.jpg" alt="Nature by joaoloureiro, on Flickr" />
+				</li>
+				<li>
+					<img src="http://farm4.static.flickr.com/3204/2723128657_5301513333.jpg" alt="Nature Butterfly 16 by Christian Revival Network, on Flickr" />
+				</li>
+				<li>
+					<img src="http://farm4.static.flickr.com/3073/2724886288_9bb555d3a1.jpg" alt="Nature Antarctica 03 by Christian Revival Network, on Flickr" />
+				</li>
+				<li>
+					<img src="http://farm1.static.flickr.com/22/31760796_e22ca5b0e8.jpg" alt="Nature by wot nxt, on Flickr" />
+				</li>
+				<li>
+					<img src="http://farm4.static.flickr.com/3039/2724103423_bc3c61fe89.jpg" alt="Nature Grand Canyon 08 by Christian Revival Network, on Flickr" />
+				</li>
+				<li>
+					<img src="http://farm4.static.flickr.com/3068/2724978374_18877e3ccc.jpg" alt="Nature Mountains 08 by Christian Revival Network, on Flickr" />
+				</li>
+				<!--
+				<li>
+					<img src="http://farm5.static.flickr.com/4073/4774548586_dcffd67dd6.jpg" alt="nature spirits by AlicePopkorn, on Flickr" />
+				</li>
+				<li>
+					<img src="http://farm2.static.flickr.com/1266/1402810863_79dc5f1719.jpg" alt="nature by Per Ola Wiberg ~ Powi, on Flickr" />
+				</li>
+				-->
+			</ul>
+		</div>
+		<div id="controls">
+			<a href="#previous">Previous</a>
+			<a href="#next">Next</a>
+		</div>
+		<div id="cycle-controls">
+			<a href="#toggle">Play</a>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+		<script src="../jquery.carosello.js"></script>
+		<script>
+			$(function () {
+				var $toggle = $('a[href=#toggle]'),
+					$previous = $('a[href=#previous]'),
+					$next = $('a[href=#next]'),
+					$ca = $('.ca').carosello({
+						'cycle' : {
+							'onStart' : function () {
+								$toggle.text('Pause');
+							},
+							'onStop' : function () {
+								$toggle.text('Play');
+							}
+						}
+					});
+				
+				$toggle.click(function (e) {
+					e.preventDefault();
+					$ca.cycle.toggle();
+				});
+				
+				$previous.click(function (e) {
+					e.preventDefault();
+					$ca.step(-3);
+				});
+				
+				$next.click(function (e) {
+					e.preventDefault();
+					$ca.step(3);
+				});
+			});
+		</script>
+	</body>
+</html>
