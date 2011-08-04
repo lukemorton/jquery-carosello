@@ -9,7 +9,7 @@ want to control your carosello. All I assume is that you want it
 to go around.
 
 These decisions also make it fairly lightweight, before minification
-the plugin is around 8.7kb. I've uglified it down to 2.6kb. That's
+the plugin is around 9kb. I've uglified it down to 2.8kb. That's
 some lightweight ish right there, compared to say jCarousel which is
 35kb (15kb minified). Having said that jCarousel does more for you 
 which can be a benefit, check it out :)
@@ -121,11 +121,18 @@ there is no end to the slides within the carousel.
 This is the starting index the carousel will slide to on
 initialisation.
 
-### onChange(event, index, $target) (function)
+### onBefore(event, index, $target) (function)
 
 **Default:** null
 
-Shortcut to binding the caChange event. The caChange event is
+Shortcut to binding the caBefore event. The caBefore event is
+triggered after the slide has changed.
+
+### onAfter(event, index, $target) (function)
+
+**Default:** null
+
+Shortcut to binding the caAfter event. The caAfter event is
 triggered after the slide has changed.
 
 ### animation($container, $target, settings) (function)
@@ -169,13 +176,6 @@ cycle is first started.
 
 A shortcut to the caCycleStop event. This event is trigged when the
 cycle is first stopped.
-
-### cycle.onChange(event, index, $target) (function)
-
-**Default:** null
-
-Shortcut to binding the caCycleChange event. The caCycleChange event
-is triggered after the slide has changed during a cycle.
 
 ## Methods of $.fn.carosello
 
