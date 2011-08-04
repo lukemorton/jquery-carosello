@@ -219,6 +219,9 @@
 					index = nIndex(slideCount, index);
 					$target = $slides.eq(index);
 				}
+					
+                // Slide change complete event
+                $ca.trigger(settings.ns + 'Before', [index, $target]);
 				
 				// Animate to scroll position
 				$ca.animate(settings.animation($ca, $target, settings),
@@ -243,7 +246,7 @@
 					$ca.data(settings.ns + 'Index', index);
 					
 					// Slide change complete event
-					$ca.trigger(settings.ns + 'Change', [index, $target]);
+					$ca.trigger(settings.ns + 'After', [index, $target]);
 					
 					if (callback) {
 						callback.call(ca, index, $target);
@@ -322,9 +325,7 @@
 				
 				function cycle() {
 					ca.cycle.instance = setTimeout(cycle, speed);
-					ca.step(settings.cycle.step, function (i, $t) {
-						ca.trigger(settings.ns + 'CycleChange', [i, $t]);
-					});
+					ca.step(settings.cycle.step);
 				}
 				
 				ca.cycle.instance = setTimeout(cycle, speed);
@@ -362,11 +363,11 @@
 			$.carosello.globalSettings, settings);
 			
 		// Add shortcut events if requested
-		$.each(['Change'], function (i, val) {
+		$.each(['Before', 'After'], function (i, val) {
 			var c = settings['on' + val];
 			if (c) { ca.bind(settings.ns + val, c); }
 		});
-		$.each(['Start', 'Stop', 'Change'], function (i, val) {
+		$.each(['Start', 'Stop'], function (i, val) {
 			var c = settings.cycle['on' + val];
 			if (c) { ca.bind(settings.ns + 'Cycle' + val, c); }
 		});
