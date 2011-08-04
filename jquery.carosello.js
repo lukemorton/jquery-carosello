@@ -104,8 +104,9 @@
 			
 			// Count visible slides
 			// Currently assumes all slides have same width
-			countVisible = function ($cont, $slides) {
-				return Math.floor($cont.width() / $slides.width());
+			countVisible = function ($cont, $slides, axis) {
+				var dim = axis === 'x' ? 'width' : 'height';
+				return Math.floor($cont[dim]() / $slides[dim]());
 			},
 			
 			// Generate some clones, mwhahaha
@@ -128,17 +129,6 @@
 					$clones.prependTo($parent);
 				}
 			},
-
-			// Create trick clone
-			insertTrick = function ($parent, $slides, dir) {
-				if (dir === 'ltr') {
-					return $slides.first().clone()
-						.appendTo($parent);
-				}
-				
-				return $slides.last().clone()
-					.prependTo($parent);
-			},
 			
 			// Get direction from step
 			getDir = function (step) {
@@ -158,7 +148,7 @@
 			
 			// Not animated scroll to $target
 			scrollToTarget = function ($cont, axis, $target) {
-				scrollToPosition($cont, settings.axis,
+				scrollToPosition($cont, axis,
 					$target.position()[axis === 'x' ? 'left' : 'top']);
 			},
 			
@@ -174,7 +164,7 @@
 					// Slides
 					$slides = $cont.children(),
 					slideCount = $slides.length,
-					visibleCount = countVisible($ca, $slides),
+					visibleCount,
 					
 					// Max index
 					maxIndex = slideCount - 1,
@@ -188,29 +178,24 @@
 					// Which direction are we moving?
 					dir = getDir(index - currIndex),
 					
-					// How many slides are we short?
-					shortfall = 0,
-					
 					// Clone elements
 					$clones = [];
 				
 				if (settings.infinite) {
+					visibleCount = countVisible($ca, $slides, settings.axis);
+					
 					// If infinite and work out shortfall
-					if ((dir === 'ltr' && index + visibleCount > maxIndex)
-                            || (dir === 'rtl' && index < 0)) {
-						shortfall = visibleCount;
-					}
-				}
-				
-				if (shortfall) {
-					// Insert trick as we are on last slide 
-					$clones = getClones($slides, dir, shortfall);
-					insertClones($cont, $clones, dir);
-					$target = $cont.children().eq(index);
-				
-					if (dir === 'rtl') {
-						scrollToTarget($ca, settings.axis,
-							$slides.eq(currIndex));
+					if ((dir === 'ltr' && index > maxIndex)
+							|| (dir === 'rtl' && index < 0)) {
+						// Insert trick as we are on last slide 
+						$clones = getClones($slides, dir, visibleCount);
+						insertClones($cont, $clones, dir);
+						$target = $clones.first();
+					
+						if (dir === 'rtl') {
+							scrollToTarget($ca, settings.axis,
+								$slides.eq(currIndex));
+						}
 					}
 				}
 				
@@ -220,24 +205,24 @@
 					$target = $slides.eq(index);
 				}
 					
-                // Slide change complete event
-                $ca.trigger(settings.ns + 'Before', [index, $target]);
+				// Slide change complete event
+				$ca.trigger(settings.ns + 'Before', [index, $target]);
 				
 				// Animate to scroll position
 				$ca.animate(settings.animation($ca, $target, settings),
 					settings.speed, function () {
-					
+					//return;
 					if ($clones.length) {
 						// Remove trickery now
 						$clones.remove();
 						
 						if (dir === 'ltr') {
-							$target = $slides.first();
 							index = 0;
+							$target = $slides.eq(index);
 							scrollToPosition($ca, settings.axis, 0);
 						} else if (dir === 'rtl') {
-							$target = $slides.last();
-							index = slideCount - 1;
+							index = slideCount - visibleCount;
+							$target = $slides.eq(index);
 							scrollToTarget($ca, settings.axis, $target);
 						}
 					}
