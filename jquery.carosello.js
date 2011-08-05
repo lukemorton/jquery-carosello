@@ -264,8 +264,7 @@
 			ca.has($target).each(function () {
 				var $ca = $(this);
 				
-				// TODO: I want to make the following line healthier
-				var index = $ca.find(settings.container)
+				var index = $ca
 					.children().children().filter($target)
 					.index();
 				
